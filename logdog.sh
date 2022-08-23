@@ -13,7 +13,7 @@
 # Logdog, an e-dog that sniffs through logs for interesting stuff. Woof!
 
 # ####
-# HOW TO USE (on civi1001 & frlog1001):
+# HOW TO USE (on civi1001 & frlog1002):
 : <<'STEPS'
  1) Add script to $HOME/bin dir:
  - cd to $HOME
@@ -56,7 +56,7 @@ BZCAT="/bin/bzcat"
 
 ### HOSTS ###
 CIVI1001="civi1001"
-FRLOG1001="frlog1001"
+FRLOG1002="frlog1002"
 
 trap ctrl_c INT
 
@@ -148,15 +148,15 @@ FRLOG_CURRENT_PATH="/var/log/remote"
 FRLOG_CURRENT_PATTERN="*" # all actual files in dir e.g. fundraising-misc
 FRLOG_CURRENT_GREP="$GREP"
 
-FRLOG_ARCHIVE_PATH_TODAY="/srv/archive/frlog1001/logs"
+FRLOG_ARCHIVE_PATH_TODAY="/srv/archive/frlog1002/logs"
 FRLOG_ARCHIVE_PATTERN_TODAY="*-$CURRENT_DATE.gz" # e.g. payments-20200807.gz
 FRLOG_ARCHIVE_GREP_TODAY="$ZGREP"
 
-FRLOG_ARCHIVE_PATH_OTHER="/srv/archive/frlog1001/logs"
+FRLOG_ARCHIVE_PATH_OTHER="/srv/archive/frlog1002/logs"
 FRLOG_ARCHIVE_PATTERN_OTHER="*-$ARCHIVE_DATE.gz" # e.g. payments-20200807.gz
 FRLOG_ARCHIVE_GREP_OTHER="$ZGREP"
 
-# civi process-control logs are archived on frlog1001
+# civi process-control logs are archived on frlog1002
 FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_PATH="/srv/archive/civi/process-control/$ARCHIVE_DATE"
 FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_PATTERN="*.bz2" # e.g. 20200805/thank_you_mail_send-20200805-235902.log.civi1001.bz2
 FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_GREP="$BZGREP"
@@ -219,7 +219,7 @@ if [[ $HOSTNAME == "$CIVI1001" ]]; then
     PATTERNS=("$CIVI_CURRENTISH_PROCESS_CONTROL_PATTERN")
     GREPPERS=("$CIVI_CURRENTISH_PROCESS_CONTROL_GREP")
   fi
-elif [[ $HOSTNAME == "$FRLOG1001" ]]; then
+elif [[ $HOSTNAME == "$FRLOG1002" ]]; then
   if [[ -z "$DATE" ]]; then
     PATHS=("$FRLOG_CURRENT_PATH" "$FRLOG_ARCHIVE_PATH_TODAY" "$FRLOG_ARCHIVE_PATH_OTHER" "$FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_PATH")
     PATTERNS=("$FRLOG_CURRENT_PATTERN" "$FRLOG_ARCHIVE_PATTERN_TODAY" "$FRLOG_ARCHIVE_PATTERN_OTHER" "$FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_PATTERN")
