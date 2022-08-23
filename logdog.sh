@@ -15,6 +15,7 @@
 # ####
 # HOW TO USE (on civi1001 & frlog1002):
 : <<'STEPS'
+
  1) Add script to $HOME/bin dir:
  - cd to $HOME
  - run `mkdir ./bin`
@@ -23,13 +24,16 @@
  - press Ctrl+Shift+V (to paste to cli)
  - press Ctrl+D (To save)
  - run `chmod +x ./bin/logdog`
+
  2) Add script to your PATH
  - run `echo 'if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi' >> .profile`
  - run `source .profile`
+
  3) Run Logdog
  - run `logdog -h`
+
 STEPS
 # ####
 # TODO:
@@ -55,8 +59,8 @@ ZCAT="/bin/zcat"
 BZCAT="/bin/bzcat"
 
 ### HOSTS ###
-CIVI1001="civi1001"
-FRLOG1002="frlog1002"
+CIVIHOST="civi1001"
+FRLOGHOST="frlog1002"
 
 trap ctrl_c INT
 
@@ -144,7 +148,7 @@ else
 fi
 
 ### FRLOG PATHS, PATTERNS AND GREPPERS ###
-FRLOG_CURRENT_PATH="/var/log/remote"
+FRLOG_CURRENT_PATH="/var/log/remote/"
 FRLOG_CURRENT_PATTERN="*" # all actual files in dir e.g. fundraising-misc
 FRLOG_CURRENT_GREP="$GREP"
 
@@ -162,21 +166,21 @@ FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_PATTERN="*.bz2" # e.g. 20200805/thank_you_mai
 FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_GREP="$BZGREP"
 
 ### CIVI PATHS, PATTERNS AND GREPPERS ###
-CIVI_CURRENT_PROCESS_CONTROL_PATH="/var/log/process-control" # job folders e.g. silverpop_daily
+CIVI_CURRENT_PROCESS_CONTROL_PATH="/var/log/process-control/" # job folders e.g. silverpop_daily
 CIVI_CURRENT_PROCESS_CONTROL_PATTERN="*-$CURRENT_DATE*.log"  # e.g. silverpop_daily-20200807-154459.log
 CIVI_CURRENT_PROCESS_CONTROL_GREP="$GREP"
 
 # this path holds soon-to-be-archived logs
-CIVI_CURRENTISH_PROCESS_CONTROL_PATH="/srv/archive/civi1001/process-control/$ARCHIVE_DATE"
+CIVI_CURRENTISH_PROCESS_CONTROL_PATH="/srv/archive/civi1001/process-control/$ARCHIVE_DATE/"
 CIVI_CURRENTISH_PROCESS_CONTROL_PATTERN="*.bz2" # e.g. 20200805/thank_you_mail_send-20200805-235902.log.civi1001.bz2
 CIVI_CURRENTISH_PROCESS_CONTROL_GREP="$BZGREP"
 
 # CiviCRM ConfigAndLog logs
-CIVI_CONFIG_AND_LOG_PATH="/srv/org.wikimedia.civicrm-files/civicrm/ConfigAndLog"
+CIVI_CONFIG_AND_LOG_PATH="/srv/org.wikimedia.civicrm-files/civicrm/ConfigAndLog/"
 CIVI_CONFIG_AND_LOG_PATTERN="CiviCRM*.log*"  # e.g. CiviCRM.7a880382d2e1d80611365ce1.log.202009010000
 CIVI_CONFIG_AND_LOG_GREP="$GREP"
 
-### FUNCS ####
+### FUNC ####
 function logdog() {
   local FILE_PATH=$1
   local FILENAME_PATTERN=$2
@@ -209,7 +213,7 @@ function logdog() {
 }
 
 ### HOST-BASED SELECTIONS ###
-if [[ $HOSTNAME == "$CIVI1001" ]]; then
+if [[ $HOSTNAME == "$CIVIHOST" ]]; then
   if [[ -z "$DATE" ]]; then
     PATHS=("$CIVI_CURRENT_PROCESS_CONTROL_PATH" "$CIVI_CURRENTISH_PROCESS_CONTROL_PATH" "$CIVI_CONFIG_AND_LOG_PATH")
     PATTERNS=("$CIVI_CURRENT_PROCESS_CONTROL_PATTERN" "$CIVI_CURRENTISH_PROCESS_CONTROL_PATTERN" "$CIVI_CONFIG_AND_LOG_PATTERN")
@@ -219,7 +223,7 @@ if [[ $HOSTNAME == "$CIVI1001" ]]; then
     PATTERNS=("$CIVI_CURRENTISH_PROCESS_CONTROL_PATTERN")
     GREPPERS=("$CIVI_CURRENTISH_PROCESS_CONTROL_GREP")
   fi
-elif [[ $HOSTNAME == "$FRLOG1002" ]]; then
+elif [[ $HOSTNAME == "$FRLOGHOST" ]]; then
   if [[ -z "$DATE" ]]; then
     PATHS=("$FRLOG_CURRENT_PATH" "$FRLOG_ARCHIVE_PATH_TODAY" "$FRLOG_ARCHIVE_PATH_OTHER" "$FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_PATH")
     PATTERNS=("$FRLOG_CURRENT_PATTERN" "$FRLOG_ARCHIVE_PATTERN_TODAY" "$FRLOG_ARCHIVE_PATTERN_OTHER" "$FRLOG_CIVI_PROCESS_CONTROL_ARCHIVE_PATTERN")
